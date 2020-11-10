@@ -3,7 +3,7 @@ package dam.fjerrando_tscalise;
 /*
  * CASINO CODE
  *
- * V. 0.5   LAST UPDATE: 09/11/2020
+ * V. 0.6   LAST UPDATE: 10/11/2020
  *
  * Creadores:
  * Joan S. Ferrando
