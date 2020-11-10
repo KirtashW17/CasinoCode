@@ -19,6 +19,11 @@ public class Main {
          * Solo pueden jugar mayoes de 18 años
          *
          * GIT REPOSITORY: https://github.com/Kycoo17/CasinoCode
+         *
+         * TODO
+         *  -COMENTAR
+         *  -ARREGLAR RULETA.JAVA
+         *
          */
 
         // Constantes
@@ -65,7 +70,7 @@ public class Main {
 
         input = (String) JOptionPane.showInputDialog(null, "Inserte su edad:", "Control Edad",
                 JOptionPane.QUESTION_MESSAGE);
-        if (input==null)
+        if (input==null || input.equals(""))
             System.exit(0);
         edadInt = Integer.parseInt(input);
         if (edadInt < edadLegal) {
@@ -83,6 +88,9 @@ public class Main {
             switch (input) {
                 case "Juego de la Ruleta Americana":
                     JOptionPane.showMessageDialog(null, "Ruleta Americana", title, 1);
+                    Ruleta ruleta = new Ruleta(3,12);
+                    ruleta.setVisible(true);
+                    ruleta.pack();
                     break;
                 case "Juego del Bingo":
                     break;
@@ -96,4 +104,7 @@ public class Main {
             }
         }
     }
+
+    
+
 }
