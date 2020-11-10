@@ -1,11 +1,6 @@
 # CasinoCode
 ## Proyecto Casino M3 UF1 1DAM
 
-
-***************************
-***	CASINO CODE	***
-***************************
-
 Programa creado por Thomas Scalise y Joan S. Ferrando
 
 ### Changelog:
@@ -36,6 +31,8 @@ Programa creado por Thomas Scalise y Joan S. Ferrando
 
 **v0.6:**
 - Replaced the Roulette.java class that extends JDialog for a method.
+
+**************************
 
 ### TO-DO:
 - Add functionality to the buttons
