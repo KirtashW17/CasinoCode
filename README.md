@@ -24,17 +24,17 @@ Programa creado por Thomas Scalise y Joan S. Ferrando
 - Used shorthand sentences
 
 **v0.4:**
-- Generating de American Roulette Board using a Modal JDialog
+- Generating the American Roulette Board using a Modal JDialog
 
 **v0.5:**
 - Improving and simplifying the board generation code  
 
 **v0.6:**
-- Replaced the Roulette.java class that extends JDialog for a method.
+- Replaced the Roulette.java class that extends JDialog for a method
 
 **************************
 
 ### TO-DO:
 - Add functionality to the buttons
-- Learn how to update JDialog content
-- Improve Layout and add necessary fields
+- Learn how to update JDialog content without recreating it
+- Improve Layout and add required fields
