@@ -1,5 +1,4 @@
-package dam.JFerrando_TScalise;
-
+package dam.fjerrando_tscalise;
 
 import java.awt.*;
 import javax.swing.*;

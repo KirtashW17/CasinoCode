@@ -25,7 +25,14 @@ V.0.2:
 - Debug the loop of the program
 - Add more bugs to fix later
 
-V.0.3:
+V.0.3-v0.4:
 - Debug age verification
-- Refactored som names
+- Refactored some names
 - Used shorthand
+
+v0.5:
+- Generado el tablero de la Ruleta Americana  mediante JDialog Modal
+
+v0.6: 
+- Mejorado y simplificado el funcionamiento del tablero.
+- Usado un Método en vez de una clase que extiende JDialog para la GUI.
