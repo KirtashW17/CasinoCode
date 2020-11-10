@@ -15,7 +15,7 @@ package dam.fjerrando_tscalise;
  *
  * TODO
  *  -Funcionalidad Botones
- *  -CPU's
+ *  -CPU' Jugadores
  *  -Actualizar JDialog
  *  -Color de Fuente
  *  -Layout
@@ -120,6 +120,7 @@ public class Main {
         //CONFIG pan_tablero
         pan_tablero.setLayout(new GridLayout(rows,cols));
         //ELEMENTOS pan_tablero
+        //SE GENERAN LOS BOTONES SEGÚN LA MATRIZ CREADA ANTERIORMENTE PARA EL TABLERO, LUEGO SI EL VALOR ESTÁ EN EL VECTOR ROJOS PINTA EL FONDO DE ROJO.
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
                 flag = false;
