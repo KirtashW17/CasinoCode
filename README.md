@@ -1,5 +1,5 @@
 # CasinoCode
-Proyecto Casino M3 UF1 1DAM
+## Proyecto Casino M3 UF1 1DAM
 
 
 ***************************
@@ -8,31 +8,36 @@ Proyecto Casino M3 UF1 1DAM
 
 Programa creado por Thomas Scalise y Joan S. Ferrando
 
-Changelog:
+### Changelog:
 
-V.0.1:
-
+**v0.1:**
 - Add the menu of the casino
 - Add color of the menu
 - Add options
 - Debug interfaces errors
 - Add temporal icon
 
-V.0.2:
-
+**v0.2:**
 - Add age verification
 - Add new icon
-- Debug the loop of the program
+- Bugs solved in the program main loop
 - Add more bugs to fix later
 
-V.0.3-v0.4:
-- Debug age verification
+**v0.3:**
+- Bugs solved in age verification
 - Refactored some names
-- Used shorthand
+- Used shorthand sentences
 
-v0.5:
-- Generado el tablero de la Ruleta Americana  mediante JDialog Modal
+**v0.4:**
+- Generating de American Roulette Board using a Modal JDialog
 
-v0.6: 
-- Mejorado y simplificado el funcionamiento del tablero.
-- Usado un Método en vez de una clase que extiende JDialog para la GUI.
+**v0.5:**
+- Improving and simplifying the board generation code  
+
+**v0.6:**
+- Replaced the Roulette.java class that extends JDialog for a method.
+
+### TO-DO:
+- Add functionality to the buttons
+- Learn how to update JDialog content
+- Improve Layout and add necessary fields
