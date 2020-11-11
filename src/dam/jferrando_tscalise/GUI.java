@@ -52,7 +52,7 @@ public class GUI {
             JPanel list = new JPanel();                                         //PANEL LISTA SUPERIOR IZQUIERDO (SE PUEDE SUSTITUIR CON UN LIST)
 
             //CREACIÓN ETIQUETAS
-            Label label_tuApuesta = new Label("Apuesta: No seleccionada");
+            Label label_tuApuesta = new Label("Apuesta: ");
             Label label_fichas = new Label("Fichas: " + fichasUsuario);
             Label label_cpu1 = new Label("CPU1: " + fichasCPU1);
             Label label_cpu2 = new Label("CPU2: " + fichasCPU2);
@@ -158,8 +158,8 @@ public class GUI {
                     new Apuesta();
                     label_fichas.setText("Fichas: " + fichasUsuario);
                     label_cpu1.setText("CPU1: " + fichasCPU1);
-                    label_cpu2.setText("CPU2: " + fichasCPU2);
-                    label_cpu3.setText("CPU3: " + fichasCPU3);
+                    label_cpu2.setText("CPU2: " + fichasCPU1);
+                    label_cpu3.setText("CPU3: " + fichasCPU1);
                     label_banca.setText("Banca: " + fichasBanca);
                     dialog.revalidate();
                 }
