@@ -3,7 +3,7 @@ package dam.fjerrando_tscalise;
 /*
  * CASINO CODE
  *
- * V. 0.6   LAST UPDATE: 10/11/2020
+ * V. 0.6.2   LAST UPDATE: 11/11/2020
  *
  * Creadores:
  * Joan S. Ferrando
@@ -25,11 +25,11 @@ package dam.fjerrando_tscalise;
 import javax.swing.*;
 import javax.swing.plaf.ColorUIResource;
 import java.awt.*;
+import java.util.regex.Pattern;
 
 public class Main {
 
     public static void main(String[] args) {
-
 
         // Constantes
         final int Apuesta = 10;
@@ -52,15 +52,26 @@ public class Main {
         //Matriz
         int[][] tablero = new int[3][12];
 
+        //Gestor de Interfaz
         UIManager UI = new UIManager();
         UI.put("OptionPane.background", new ColorUIResource(160, 160, 160));
         UI.put("Panel.background", new ColorUIResource(160, 160, 160));
 
 
-        input = (String) JOptionPane.showInputDialog(null, "Inserte su edad:", "Control Edad",
-                JOptionPane.QUESTION_MESSAGE);
-        if (input==null || input.equals(""))
-            System.exit(0);
+        //Solicitados la edad y la guardamos en la variable input, si la edad es "" la volvemos a pedir, si es null cerramos el programa
+        do {
+            input = JOptionPane.showInputDialog(null, "Inserte su edad:", "Control Edad",
+                    JOptionPane.QUESTION_MESSAGE);
+            if (input==null)
+                System.exit(0);
+            else if(!Pattern.matches("[0-9]+", input)){
+                JOptionPane.showMessageDialog(null, "La edad insertada no es un número válido..");
+                input = "";
+            }
+
+        } while (input.equals(""));
+
+        //Una vez insertado
         edadInt = Integer.parseInt(input);
         if (edadInt < edadLegal) {
             JOptionPane.showMessageDialog(null, "Necesitas ser mayor de edad para jugar.");
@@ -77,9 +88,7 @@ public class Main {
             switch (input) {
                 case "Juego de la Ruleta Americana":
                     JOptionPane.showMessageDialog(null, "Ruleta Americana", title, 1);
-                    Ruleta ruleta = new Ruleta(3,12);
-                    ruleta.setVisible(true);
-                    ruleta.pack();
+                    crearGUIRuleta("1");
                     break;
                 case "Juego del Bingo":
                     break;
@@ -104,7 +113,7 @@ public class Main {
         JDialog dialog = new JDialog(new JFrame(), "Ruleta Americana", true);
         JPanel pan_contenedor = new JPanel();                                     //PANEL CONTENEDOR
         JPanel pan_tablero = new JPanel();                                      //PANEL TABLERO
-        JPanel pan_inferior = new JPanel();                                     //PAMEL INFERIOR
+        JPanel pan_inferior = new JPanel();                                     //PANEL INFERIOR
 
         //Generación del Tablero:
         for (int i = 0; i < rows; i++) {
@@ -126,6 +135,7 @@ public class Main {
                 flag = false;
                 JButton button = new JButton(Integer.toString(tablero[i][j]));
                 button.setPreferredSize(new Dimension(65, 65));
+                button.setFont(new Font("Courier", Font.BOLD,25));
 
                 for (int k = 0; k < (rojos.length); k++) {
                     if (rojos[k] == tablero[i][j])
@@ -141,19 +151,56 @@ public class Main {
             }
         }
 
+
+
+
+        //Lista
+        /*List list = new List(5);
+        list.add("Fichas Disponibles: X");
+        list.add("CPU1: X");
+        list.add("CPU2: X");
+        list.add("CPU3: X");
+        list.add("BANCA X");
+*/
+        JPanel list = new JPanel();
+        list.setLayout(new BoxLayout(list, BoxLayout.Y_AXIS));
+        list.add(new Label("TUS FICHAS: X"));
+        list.add(new Label("CPU1 : X"));
+        list.add(new Label("CPU2 : X"));
+        list.add(new Label("CPU3 : X"));
+        list.add(new Label("BANCA : X"));
+        list.setBackground(Color.lightGray);
+        list.setMaximumSize(new Dimension(180, 300));
+
+        JPanel list_container = new JPanel();
+        list_container.setBackground(Color.lightGray);
+        list_container.setMaximumSize(new Dimension(180,1800));
+        list_container.add(list);
+
+
+
         //CONFIG pan_inferior
         pan_inferior.setSize(10,1);
         pan_inferior.setPreferredSize(new Dimension(600,65));
         //ELEMENTOS pan_inferior
-        pan_inferior.add(new Label("Fichas disponibles : "+str+"\n Banca: Y \n CPU1:"));
-        pan_inferior.add(new TextField("Insertar Apuesta:"));
-        pan_inferior.add(new JButton("Confirmar Apuesta"));
-        pan_inferior.add(new JButton("Volver al Menú"));
+        //pan_inferior.add(new Label("Fichas disponibles : "+str+"\n Banca: Y \n CPU1:"));
+        pan_inferior.add(new TextField("Insertar apuesta...")).setFont(new Font("Courier", Font.ITALIC,12));
+        pan_inferior.add(new JButton("Confirmar apuesta")).setFont(new Font("Courier", Font.BOLD,15));;
+        pan_inferior.add(new JButton("Volver al Menú")).setFont(new Font("Courier", Font.BOLD,15));;
+
+
+
+
+        JPanel pan_superior = new JPanel();
+        pan_superior.setLayout(new BoxLayout(pan_superior,2));
+        pan_superior.add(list_container);
+        pan_superior.add(pan_tablero);
+
 
         //CONFIG pan_contenedor
         pan_contenedor.setLayout(new BoxLayout(pan_contenedor,1));
         //ELEMENTOS pan_contenedor
-        pan_contenedor.add(pan_tablero);
+        pan_contenedor.add(pan_superior);
         pan_contenedor.add(pan_inferior);
 
         //JDialog
@@ -162,6 +209,8 @@ public class Main {
         pan_contenedor.add(new JButton("aa"));
         dialog.pack();
         dialog.setVisible(true);
+
+
 
         /*dialog.remove(0);
         dialog.getContentPane().add(pan_contenedor);

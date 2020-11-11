@@ -3,14 +3,14 @@ package dam.fjerrando_tscalise;
 import java.awt.*;
 import javax.swing.*;
 
-public class Ruleta extends JDialog {
+public class OLD_Ruleta extends JDialog {
 
     int[] rojos = {3, 9, 12, 18, 21, 30, 36, 5, 14, 23, 32, 1, 7, 16, 19, 25, 34};  //VECTOR DE NUMEROS ROJOS
     boolean flag;                                                                   //BOOLEANO QUE INDICA SI UN NUMERO ES ROJO O NO
     int casilla, primeraCasilla = 3;                                                //VARIABLES NUMERICAS PARA EL NUMERO DE LA CASILLA
     int[][] tablero = new int[3][12];                                               //MATRIZ PARA EL TABLERO
 
-    public Ruleta(int row, int col){
+    public OLD_Ruleta(int row, int col){
         super();
         this.setTitle("PRUEBA");
         this.setSize(850,300);
