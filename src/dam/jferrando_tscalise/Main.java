@@ -174,11 +174,13 @@ public class Main {
                     button.setBackground(Color.RED);
                 }
 
-                //Variables finales solicitadas dentro del actionPerformed
-                apuestaUsuario = tablero[i][j];
                 button.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
+
+                        //Modificamos la variable apuestAuSUARIO
+                        apuestaUsuario = Integer.parseInt(button.getText());
+                        //Modificamos la etiqueta tuApuesta
                         label_tuApuesta.setText("Apuesta: "+apuestaUsuario);
                         dialog.revalidate();
                     }
