@@ -5,7 +5,10 @@ Programa creado por Thomas Scalise y Joan S. Ferrando
 
 ### Changelog:
 
-**v0.6.3:***
+***v0.7.0:***
+- Started to work to the game logic
+
+***v0.6.3:***
 - Starting to add functionality to buttons
 
 **v0.6.2:**
