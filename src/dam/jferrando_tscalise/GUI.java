@@ -16,8 +16,9 @@ public class GUI {
     static int fichasBanca = 1000;
 
     static JDialog dialog = new JDialog(new JFrame(), "Ruleta Americana", true);
-    static JPanel informe = new JPanel();
-    static JPanel informe2 = new JPanel();
+
+
+
 
 
     static Label info1 = new Label();
@@ -28,16 +29,20 @@ public class GUI {
     static Label info6 = new Label();
 
     static int[] rojos = {3, 9, 12, 18, 21, 30, 36, 5, 14, 23, 32, 1, 7, 16, 19, 25, 34};  //VECTOR DE NUMEROS ROJOS
+    int[][] tablero = new int[3][12];                                               //MATRIZ TABLERO
+
+    public void createInterface(){
+
+        JPanel informe = new JPanel();
+        JPanel informe2 = new JPanel();
+
+
+            /*static JPanel informe = new JPanel();
+    static JPanel informe2 = new JPanel();*/
 
 
 
-
-
-
-
-
-    public GUI(){
-            //VARIABLES GUI RULETA
+        //VARIABLES GUI RULETA
             int[][] tablero = new int[3][12];                                               //MATRIZ TABLERO
             int casilla, primeraCasilla = 3, rows= 3, cols = 12 ;                           //VARIABLES NUMERICAS PARA EL NUMERO DE LA CASILLA, FILAS Y COLUMNAS
             boolean flag;                                                                   //BOOLEANO QUE INDICA SI UN NUMERO ES ROJO O NO
@@ -155,11 +160,11 @@ public class GUI {
             botonConfirmar.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    new Apuesta();
+                    Ruleta.apostar();
                     label_fichas.setText("Fichas: " + fichasUsuario);
                     label_cpu1.setText("CPU1: " + fichasCPU1);
-                    label_cpu2.setText("CPU2: " + fichasCPU1);
-                    label_cpu3.setText("CPU3: " + fichasCPU1);
+                    label_cpu2.setText("CPU2: " + fichasCPU2);
+                    label_cpu3.setText("CPU3: " + fichasCPU3);
                     label_banca.setText("Banca: " + fichasBanca);
                     dialog.revalidate();
                 }
@@ -168,7 +173,7 @@ public class GUI {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     //dialog.setVisible(false);
-                    dialog.dispose();
+                    dialog.setVisible(false);
                 }
             });
 
@@ -217,7 +222,6 @@ public class GUI {
             dialog.getContentPane().add(pan_contenedor);
             dialog.getContentPane().add(pan_contenedor);
             dialog.pack();
-            dialog.setVisible(true);
 
 
 
@@ -235,5 +239,13 @@ public class GUI {
         dialog.setVisible(true);*/
 
         }
+        public void revalidate(){
+        dialog.revalidate();
+    }
+
+    public void setVisible(){
+        dialog.setVisible(true);
+    }
+
     }
 

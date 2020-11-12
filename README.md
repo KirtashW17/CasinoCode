@@ -5,7 +5,14 @@ Programa creado por Thomas Scalise y Joan S. Ferrando
 
 ### Changelog:
 
-***v0.7.0:***
+***v0.9:***
+- Additional Functionality added (BETA)
+- Structured in Classes (only for better understanding, but can be methods because they havent more than 1 instance)
+
+***v0.8:***
+- Basic Functionality Finished
+
+***v0.7:***
 - Started to work to the game logic
 
 ***v0.6.3:***
@@ -55,3 +62,4 @@ Programa creado por Thomas Scalise y Joan S. Ferrando
 - Learn how to update JDialog content without recreating it
 - Improve Layout and add required fields
 - Label or List (select one and make it interactive)
+- Use Player Class

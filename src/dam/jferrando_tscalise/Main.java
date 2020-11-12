@@ -23,22 +23,20 @@ package dam.jferrando_tscalise;
  *  -Cambiar MessageTypes de JOptionPane
  */
 //IMPORTS para el diseño de la interfaz
-
 import javax.swing.*;
 import javax.swing.plaf.ColorUIResource;
-import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.Random;
 import java.util.regex.Pattern;
 
 public class Main {
 
     public static void main(String[] args) {
 
+        Ruleta ruleta = new Ruleta();
+        ruleta.createInterface();
+
         // Constantes INT menú
         final int edadLegal = 18;
-        final ImageIcon icon = new ImageIcon("img/icon.png");  //FIXME elegir icono
+        final ImageIcon icon = new ImageIcon("img/icon.png");
 
 
         // Variable INT menú
@@ -84,7 +82,7 @@ public class Main {
             switch (input) {
                 case "Juego de la Ruleta Americana":
                     //Si elegimos el Juego de la Ruleta Americana generamos la interfaz del juego.
-                    new GUI();
+                    ruleta.showInterface();
                     break;
                 case "Juego del Bingo":
                     JOptionPane.showMessageDialog(null, "Disponible Próximamente", title, 1);

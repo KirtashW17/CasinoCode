@@ -6,11 +6,24 @@ import java.util.Random;
 
 import static dam.jferrando_tscalise.GUI.*;
 
-public class Apuesta {
+public class Ruleta {
+
+    static GUI gui = new GUI();
 
 
-    public Apuesta() {
+    public Ruleta() {
 
+
+    }
+
+    public void createInterface(){
+        gui.createInterface();
+    }
+
+    public void showInterface() { gui.setVisible();}
+
+    static public void apostar(){
+        Random rnd = new Random();
         int enJuego = 0, jugadores = 1;
         int randCPU1, randCPU2, randCPU3, randGanador;
         int[] elegidos = new int[3];
@@ -19,27 +32,24 @@ public class Apuesta {
         boolean isCPU2Playing;
         boolean isCPU3Playing;
         boolean ganador;
-        //index 0=user | 1=cpu1 | 2=cpu2 | 3=cpu3 | 4=randResult
-        boolean[] esRojo = new boolean[5];          // false=negro | true=rojo
+                                                       //index 0=user | 1=cpu1 | 2=cpu2 | 3=cpu3 | 4=randResult
+        boolean[] esRojo = new boolean[5];            // false=negro | true=rojo
         int nRojos = 0;
         int fraccionRecompensa;
         //double fraccionRecompensa;
-
-
-
         isCPU1Playing = isCPU2Playing = isCPU3Playing = ganador = false;
 
-        Random rnd = new Random();
 
         /*REVISAMOS QUE LAS FICHAS DEL USUARIO SEAN SUFICIENTES*/
-        if (fichasUsuario < APUESTA || apuestaUsuario == 0) {
+        if (gui.fichasUsuario < APUESTA || gui.apuestaUsuario == 0) {
             //NO HAY SUFICIENTES FICHAS o el usuario no ha seleccionado la apuesta
         } else {
             //SI SON SUFICIENTES,
             enJuego += APUESTA;
-            fichasUsuario -= APUESTA;
+            gui.fichasUsuario -= APUESTA;
             elegidos[0] = apuestaUsuario;
-            info1.setText("El Usuario ha apostado por el  " + apuestaUsuario);
+            info1.setText("El Usuario ha apostado por el  " + gui.apuestaUsuario);
+            gui.revalidate();
 
 
             randCPU1 = rnd.nextInt(36) + 1;

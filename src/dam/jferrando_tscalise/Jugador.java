@@ -4,7 +4,7 @@ public class Jugador {
 
     int apuesta;
     int fichas=100;
-    boolean jugando;
+    boolean jugando = false;
     boolean esRojo = false;
 
     public Jugador(){
@@ -42,8 +42,12 @@ public class Jugador {
 
     }
 
+    public void comprobarSiEsRojo(){
 
+    }
 
+    public void nuevaApuesta(){
 
+    }
 
 }
