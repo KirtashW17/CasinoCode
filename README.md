@@ -2,7 +2,9 @@
 ## Proyecto Casino M3 UF1 1DAM
 
 Software created by Thomas Scalise and Joan S. Ferrando.
+
 Last stable version: 0.9
+
 Date of release: 16/11/2020
 
 ### Changelog:
