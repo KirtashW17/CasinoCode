@@ -67,3 +67,4 @@ Date of release: 16/11/2020
 - Add better message dialog on development games.
 - Clean code and document code.
 - Change icon.
+- Add wait time to simulate real game
