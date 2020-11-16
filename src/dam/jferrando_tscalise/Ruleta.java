@@ -1,177 +1,220 @@
 package dam.jferrando_tscalise;
 
-import javax.swing.*;
 import java.awt.*;
 import java.util.Random;
 
-import static dam.jferrando_tscalise.GUI.*;
-
 public class Ruleta {
 
-    static GUI gui = new GUI();
 
 
-    public Ruleta() {
+    static GUI gui = new GUI();  //Importa la GUI y genera la interfaz, pero no la imprime aún.
 
 
+
+    public void showInterface() {
+        gui.setVisible(); //La interfaz se vuelve visible
     }
 
-    public void createInterface(){
-        gui.createInterface();
-    }
+    static public void apostar() {
 
-    public void showInterface() { gui.setVisible();}
+        final int APUESTA=10;
 
-    static public void apostar(){
-        Random rnd = new Random();
+        //Variables de la apuesta
         int enJuego = 0, jugadores = 1;
         int randCPU1, randCPU2, randCPU3, randGanador;
         int[] elegidos = new int[3];
 
-        boolean isCPU1Playing;
+        Random rnd = new Random();
+
+
+        boolean isCPU1Playing; //cpu1.playing
         boolean isCPU2Playing;
         boolean isCPU3Playing;
         boolean ganador;
-                                                       //index 0=user | 1=cpu1 | 2=cpu2 | 3=cpu3 | 4=randResult
+        //index 0=user | 1=cpu1 | 2=cpu2 | 3=cpu3 | 4=randResult
         boolean[] esRojo = new boolean[5];            // false=negro | true=rojo
         int nRojos = 0;
         int fraccionRecompensa;
         //double fraccionRecompensa;
         isCPU1Playing = isCPU2Playing = isCPU3Playing = ganador = false;
 
-
         /*REVISAMOS QUE LAS FICHAS DEL USUARIO SEAN SUFICIENTES*/
-        if (gui.fichasUsuario < APUESTA || gui.apuestaUsuario == 0) {
+        if (!gui.jugador.puedeJugar(APUESTA)) {
             //NO HAY SUFICIENTES FICHAS o el usuario no ha seleccionado la apuesta
+            gui.pan_informe1.setVisible(false);
+            gui.pan_informe2.setVisible(false);
+            gui.label_error.setText("No tienes suficientes fichas como para seguir apostando.");
+            gui.label_error.setFont(new Font("Courier", Font.BOLD, 38));
+            gui.label_error.setForeground(Color.RED);
+            gui.label_error.setAlignment(Label.CENTER);
+            gui.label_error.setVisible(true);
+
+        } else if(gui.jugador.getApuesta() == 0){
+            gui.pan_informe1.setVisible(false);
+            gui.pan_informe2.setVisible(false);
+            gui.label_error.setText("No has seleccionado ninguna casilla.");
+            gui.label_error.setFont(new Font("Courier", Font.BOLD, 38));
+            gui.label_error.setForeground(Color.RED);
+            gui.label_error.setAlignment(Label.CENTER);
+            gui.label_error.setVisible(true);
+        } else if(!gui.canSomeCpuPlay()){
+            gui.pan_informe1.setVisible(false);
+            gui.pan_informe2.setVisible(false);
+            gui.label_error.setText("Solo quedas tú en la mesa! Has desvalijado a todos.");
+            gui.label_error.setFont(new Font("Courier", Font.BOLD, 38));
+            gui.label_error.setForeground(Color.BLUE);
+            gui.label_error.setAlignment(Label.CENTER);
+            gui.label_error.setVisible(true);
+
         } else {
+            if(gui.label_error.isVisible()){
+                gui.label_error.setVisible(false);
+                gui.pan_informe1.setVisible(true);
+                gui.pan_informe2.setVisible(true);
+            }
             //SI SON SUFICIENTES,
             enJuego += APUESTA;
-            gui.fichasUsuario -= APUESTA;
-            elegidos[0] = apuestaUsuario;
-            info1.setText("El Usuario ha apostado por el  " + gui.apuestaUsuario);
-            gui.revalidate();
-
+            gui.jugador.sumarFichas(-APUESTA);
+            elegidos[0] = gui.jugador.getApuesta();
+            gui.info1.setText("<html>&nbsp;Has apostado por el: " + gui.jugador.getApuesta() + "</html>");
 
             randCPU1 = rnd.nextInt(36) + 1;
-            if (fichasCPU1 >= APUESTA) {
-                isCPU1Playing = true;
+            if (gui.cpu1.puedeJugar(APUESTA)) {
+                gui.cpu1.setJugando();
                 enJuego += APUESTA;
-                fichasCPU1 -= APUESTA;
+                gui.cpu1.setFichas(gui.cpu1.getFichas() - APUESTA);
                 while (randCPU1 == elegidos[0]) {
                     randCPU1 = rnd.nextInt(36) + 1;
                 }
                 elegidos[1] = randCPU1;
-                info2.setText("LA CPU1 ha apostado por el  " + randCPU1);
-
+                gui.info2.setText("<html>&nbsp;CPU1 ha apostado por el: " + randCPU1 + "</html>");
+                gui.info2.setFont(new Font("courier", Font.BOLD, 22));
+                gui.info2.setForeground(Color.BLACK);
+            }
                 randCPU2 = rnd.nextInt(36) + 1;
-                if (fichasCPU2 >= APUESTA) {
-                    isCPU1Playing = true;
+                if (gui.cpu2.puedeJugar(APUESTA)) {
+                    gui.cpu2.setJugando();
                     enJuego += APUESTA;
-                    fichasCPU2 -= APUESTA;
+                    gui.cpu2.setFichas(gui.cpu2.getFichas() - APUESTA);
                     while (randCPU2 == elegidos[0] || randCPU2 == elegidos[1]) {
                         randCPU2 = rnd.nextInt(36) + 1;
                     }
                     elegidos[2] = randCPU2;
-                    info3.setText("LA CPU2 ha apostado por el  " + randCPU2);
+                    gui.info3.setText("<html>&nbsp;CPU2 ha apostado por el: " + randCPU2 + "</html>");
+                    gui.info3.setFont(new Font("courier", Font.BOLD, 22));
+                    gui.info3.setForeground(Color.BLACK);
                 }
 
                 randCPU3 = rnd.nextInt(36) + 1;
-                if (fichasCPU3 >= APUESTA) {
-                    isCPU3Playing = true;
+                if (gui.cpu3.puedeJugar(APUESTA)) {
+                    gui.cpu3.setJugando();
                     enJuego += APUESTA;
-                    fichasCPU3 -= APUESTA;
+                    gui.cpu3.setFichas(gui.cpu3.getFichas() - APUESTA);
                     while (randCPU3 == elegidos[0] || randCPU3 == elegidos[1] || randCPU3 == elegidos[2]) {
                         randCPU3 = rnd.nextInt(36) + 1;
                     }
-                    info4.setText("LA CPU3 ha apostado por el  " + randCPU3);
+                    gui.info4.setText("<html>&nbsp;CPU3 ha apostado por el: " + randCPU3 + "</html>");
+                    gui.info4.setFont(new Font("courier", Font.BOLD, 22));
+                    gui.info4.setForeground(Color.BLACK);
                 }
 
                 jugadores = enJuego / APUESTA;
                 randGanador = rnd.nextInt(36) + 1;
-                info5.setText("Ha salido el " + randGanador);
+            gui.info5.setText("<html>&nbsp;Ha salido el: " + randGanador + "</html>");
 
-                if (randGanador == apuestaUsuario) {
-                    fichasUsuario += enJuego;
-                    info6.setText("Ha ganado el usuario");
+
+                if (randGanador == gui.jugador.getApuesta()) {
+                    gui.jugador.setFichas(gui.jugador.getFichas() + enJuego);
+                    gui.info6.setText("<html>Has ganado!</html>");
                 } else {
-                    if (isCPU1Playing) {
+                    if (gui.cpu1.getJugando()) {
                         if (randGanador == randCPU1) {
-                            fichasCPU1 += enJuego;
+                            gui.cpu1.setFichas(gui.cpu1.getFichas() + enJuego);
                             ganador = true;
-                            info6.setText("Ha ganado la CPU1");
+                            gui.info6.setText("<html>Ha ganado CPU1<html>");
                         }
                     }
-                    if (isCPU2Playing) {
+                    if (gui.cpu2.getJugando()) {
                         if (randGanador == randCPU2) {
-                            fichasCPU2 += enJuego;
+                            gui.cpu2.setFichas(gui.cpu2.getFichas() + enJuego);
                             ganador = true;
-                            info6.setText("Ha ganado la CPU2");
+                            gui.info6.setText("<html>Ha ganado CPU2<html>");
                         }
                     }
-                    if (isCPU3Playing) {
+                    if (gui.cpu3.getJugando()) {
                         if (randGanador == randCPU3) {
-                            fichasCPU3 += enJuego;
+                            gui.cpu3.setFichas(gui.cpu3.getFichas() + enJuego);
                             ganador = true;
-                            info6.setText("Ha ganado la CPU3");
+                            gui.info6.setText("<html>Ha ganado CPU3<html>");
                         }
                     }
+
+
+                        for (int k = 0; k < (gui.rojos.length); k++) {
+                            if (gui.rojos[k] == gui.jugador.getApuesta() && gui.jugador.getJugando()) {
+                                gui.jugador.setEsRojo(true);
+                                nRojos++;
+                                gui.info1.setText("<html>&nbsp;Has apostado por el: <span color='red'>" + gui.jugador.getApuesta() + "</span></html>");
+                            }
+                            if (gui.rojos[k] == randCPU1 && gui.cpu1.getJugando()) {
+                                gui.cpu1.setEsRojo(true);
+                                nRojos++;
+                                gui.info2.setText("<html>&nbsp;CPU1 ha apostado por el: <span color='red'>" + randCPU1 + "</span></html>");
+
+                            }
+                            if (gui.rojos[k] == randCPU2 && gui.cpu2.getJugando()) {
+                                gui.cpu2.setEsRojo(true);
+                                nRojos++;
+                                gui.info3.setText("<html>&nbsp;CPU2 ha apostado por el: <span color='red'>" + randCPU2 + "</span></html>");
+                            }
+                            if (gui.rojos[k] == randCPU3 && gui.cpu3.getJugando()) {
+                                gui.cpu3.setEsRojo(true);
+                                nRojos++;
+                                gui.info4.setText("<html>&nbsp;CPU3 ha apostado por el: <span color='red'>" + randCPU3 + "</span></html>");
+
+                            }
+                            if (gui.rojos[k] == randGanador) {
+                                gui.banca.setEsRojo(true);
+                                gui.info5.setText("<html>&nbsp;Ha salido el: <span color='red'>" + randGanador + "</span></html>");
+
+                            }
+                        }
 
                     if (!ganador) {
 
-                        for (int k = 0; k < (rojos.length); k++) {
-                            if (rojos[k] == apuestaUsuario) {
-                                esRojo[0] = true;
-                                nRojos++;
-                            }
-                            if (rojos[k] == randCPU1) {
-                                esRojo[1] = true;
-                                nRojos++;
-                            }
-                            if (rojos[k] == randCPU2) {
-                                esRojo[2] = true;
-                                nRojos++;
-                            }
-                            if (rojos[k] == randCPU3) {
-                                esRojo[3] = true;
-                                nRojos++;
-                            }
-                            if (rojos[k] == randGanador) {
-                                esRojo[4] = true;
-                            }
-                        }
 
-                        if (esRojo[4] && nRojos>0){
-                            fichasBanca += enJuego/2;
-                            fraccionRecompensa = enJuego/2/nRojos;
-                            if(esRojo[0])
-                                fichasUsuario+=fraccionRecompensa;
-                            if(esRojo[1])
-                                fichasCPU1+=fraccionRecompensa;
-                            if(esRojo[2])
-                                fichasCPU2+=fraccionRecompensa;
-                            if(esRojo[3])
-                                fichasCPU3+=fraccionRecompensa;
-                            info6.setText("Repartido (Rojo)");
-                        } else if(!esRojo[4] && nRojos<4){
-                            fichasBanca += enJuego/2;
-                            fraccionRecompensa = enJuego/2/(4-nRojos);
-                            if(!esRojo[0])
-                                fichasUsuario+=fraccionRecompensa;
-                            if(!esRojo[1])
-                                fichasCPU1+=fraccionRecompensa;
-                            if(!esRojo[2])
-                                fichasCPU2+=fraccionRecompensa;
-                            if(!esRojo[3])
-                                fichasCPU3+=fraccionRecompensa;
-                            info6.setText("Repartido (Negro)");
+                        if (gui.banca.getEsRojo() && nRojos > 0) {
+                            gui.banca.sumarFichas(enJuego / 2);
+                            fraccionRecompensa = enJuego / 2 / nRojos;
+                            if (gui.jugador.getEsRojo() && gui.jugador.getJugando())//Según lo hemos planteado el jugador siempre tiene que estar jugando por lo cual es reduntante
+                                gui.jugador.sumarFichas(fraccionRecompensa);
+                            if (gui.cpu1.getEsRojo() && gui.cpu1.getJugando())
+                                gui.cpu1.sumarFichas(fraccionRecompensa);
+                            if (gui.cpu2.getEsRojo() && gui.cpu2.getJugando())
+                                gui.cpu2.sumarFichas(fraccionRecompensa);
+                            if (gui.cpu3.getEsRojo() && gui.cpu3.getJugando())
+                                gui.cpu3.sumarFichas(fraccionRecompensa);
+                            gui.info6.setText("<html>Repartido <span color='red'>(Rojo)</span></html>");
+
+                        } else if (!gui.banca.getEsRojo() && nRojos < 4) {
+                            gui.banca.setFichas(gui.banca.getFichas() + enJuego/2);
+                            fraccionRecompensa = enJuego / 2 / (4 - nRojos);
+                            if (!gui.jugador.getEsRojo() && gui.jugador.getJugando())
+                                gui.jugador.sumarFichas(fraccionRecompensa);
+                            if (!gui.cpu1.getEsRojo() && gui.cpu1.getJugando())
+                                gui.cpu1.sumarFichas(fraccionRecompensa);
+                            if (!gui.cpu2.getEsRojo() && gui.cpu2.getJugando())
+                                gui.cpu2.sumarFichas(fraccionRecompensa);
+                            if (!gui.cpu3.getEsRojo() && gui.cpu3.getJugando())
+                                gui.cpu3.sumarFichas(fraccionRecompensa);
+                            gui.info6.setText("<html>Repartido (Negro)</html>");
                         } else {
-                            fichasBanca += enJuego;
-                            info6.setText("Ha ganado la banca");
+                            gui.banca.setFichas(gui.banca.getFichas() + enJuego);
+                            gui.info6.setText("<html>Ha ganado la banca</html>");
                         }
                     }
                 }
             }
         }
     }
-}
 

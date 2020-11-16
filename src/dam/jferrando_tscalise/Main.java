@@ -3,7 +3,7 @@ package dam.jferrando_tscalise;
 /*
  * CASINO CODE
  *
- * V. 0.6.3   LAST UPDATE: 11/11/2020
+ * V. 0.9.1   LAST UPDATE: 15/11/2020
  *
  * Creadores:
  * Joan S. Ferrando
@@ -23,6 +23,7 @@ package dam.jferrando_tscalise;
  *  -Cambiar MessageTypes de JOptionPane
  */
 //IMPORTS para el diseño de la interfaz
+
 import javax.swing.*;
 import javax.swing.plaf.ColorUIResource;
 import java.util.regex.Pattern;
@@ -31,13 +32,13 @@ public class Main {
 
     public static void main(String[] args) {
 
+        /*Importamos el juego de la ruleta y creamos la interfaz, pero no la mostramos aún*/
         Ruleta ruleta = new Ruleta();
-        ruleta.createInterface();
 
-        // Constantes INT menú
+        // Constantes menú
         final int edadLegal = 18;
         final ImageIcon icon = new ImageIcon("img/icon.png");
-
+        final ImageIcon working = new ImageIcon("img/working.png");
 
         // Variable INT menú
         int edadInt;
@@ -47,7 +48,7 @@ public class Main {
         String[] MenuInicio = {"Juego de la Ruleta Americana", "Juego del Bingo", "Juego de Arcade", "Salir"};
         String input;
 
-        //Gestor de Interfaz
+        //Gestor de Interfaz y de color
         UIManager UI = new UIManager();
         UI.put("OptionPane.background", new ColorUIResource(160, 160, 160));
         UI.put("Panel.background", new ColorUIResource(160, 160, 160));
@@ -57,14 +58,14 @@ public class Main {
         do {
             input = JOptionPane.showInputDialog(null, "Inserte su edad:", "Control Edad",
                     JOptionPane.QUESTION_MESSAGE);
-            if (input == null)
+            if (input == null) //Si el input es nulo cerramos el programa
                 System.exit(0);
                 //Si el input no es numérico repetimos el bucle.
-            else if (!Pattern.matches("[0-9]+", input)) {
+            else if (!Pattern.matches("[0-9]+", input)) {   //Si el input no es un número válido mostramos un mensaje con JOPtionPane
                 JOptionPane.showMessageDialog(null, "La edad insertada no es un número válido..");
                 input = "";
             }
-        } while (input.equals(""));
+        } while (input.equals("")); //Si el input es "" se vuelve a pedir
 
         //Una vez insertada la edad la parseamos a Int y comprobamos que no sea inferior a la edad legal
         edadInt = Integer.parseInt(input);
@@ -81,14 +82,15 @@ public class Main {
                 System.exit(0);
             switch (input) {
                 case "Juego de la Ruleta Americana":
-                    //Si elegimos el Juego de la Ruleta Americana generamos la interfaz del juego.
+                    //Si elegimos el Juego de la Ruleta Americana mostramos la interfaz del juego.
                     ruleta.showInterface();
                     break;
                 case "Juego del Bingo":
-                    JOptionPane.showMessageDialog(null, "Disponible Próximamente", title, 1);
+                    //Si elegimos el Juego del Bingo, sale un mensaje de que esta desarollo                     JOptionPane.showMessageDialog(null, "Disponible Próximamente", title, JOptionPane.INFORMATION_MESSAGE,working);
                     break;
                 case "Juego de Arcade":
-                    JOptionPane.showMessageDialog(null, "Disponible Próximamente", title, 1);
+                    //Si elegimos el Juego de Arcade, sale un mensaje de que esta desarollo.
+                    JOptionPane.showMessageDialog(null, "Disponible Próximamente", title, JOptionPane.INFORMATION_MESSAGE, working);
                     break;
                 case "Salir":
                     System.exit(0);     //0 = NO HAY ERRORES
