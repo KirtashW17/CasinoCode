@@ -2,25 +2,22 @@ package dam.jferrando_tscalise;
 
 public class Jugador {
 
+    //FIXME fichas banca y usuario
+
     int apuesta;
-    int fichas ;
+    int fichas;
     int oldFichas;
     boolean jugando = false;
     boolean esRojo = false;
     boolean esBanca;
 
-    public Jugador(boolean esBanca, int fichas) {
-        this.esBanca = esBanca;
-        this.fichas = fichas;
-        if (esBanca)
-            fichas=1000;
-        else
-            fichas=100;
-    }
     public Jugador(boolean esBanca) {
-        this(esBanca,100);
+        this.esBanca = esBanca;
+        if (esBanca)
+            fichas = 1000;
+        else
+            fichas = 100;
     }
-
     public Jugador() {
         this(false);
     }
@@ -46,16 +43,16 @@ public class Jugador {
         this.fichas = newFichas;
     }
 
-    public String diferenciaFichasHtml(){
-        int diferencia = this.fichas-this.oldFichas;
-        if (diferencia!=-10 && !esBanca)
-            diferencia-=10;
-        if (oldFichas==0)
+    public String diferenciaFichasHtml() {
+        int diferencia = this.fichas - this.oldFichas;
+        if (diferencia != -10 && !esBanca)
+            diferencia -= 10;
+        if (oldFichas == 0)
             return "";
-        if(diferencia>=0)
-            return "&nbsp;<span color='green'>(+"+diferencia+")</span>";
+        if (diferencia >= 0)
+            return "&nbsp;<span color='green'>(+" + diferencia + ")</span>";
         else
-            return "&nbsp;<span color='red'>("+diferencia+")</span>";
+            return "&nbsp;<span color='red'>(" + diferencia + ")</span>";
     }
 
     public void sumarFichas(int sum) {
@@ -76,19 +73,21 @@ public class Jugador {
         this.esRojo = esRojo;
     }
 
-    public void comprobarSiEsRojo() {
+    private void comprobarSiEsRojo() {
         boolean esRojo = false;
-        for (int i = 0 ; i<GUI.rojos.length ; i++) {
-            if (GUI.rojos[i] == this.apuesta)
+        for (int i = 0; i < GUI.rojos.length; i++) {
+            if (GUI.rojos[i] == this.apuesta) {
                 esRojo = true;
+                break;
+            }
         }
         this.esRojo = esRojo;
     }
 
-    public String getColoredString(String str){
+    public String getColoredString(String str) {
         this.comprobarSiEsRojo();
         if (this.esRojo)
-            return "<html>&nbsp;" + str + "<span color='red'>" +  apuesta + "</span></html>";
+            return "<html>&nbsp;" + str + "<span color='red'>" + apuesta + "</span></html>";
         else
             return "<html>&nbsp;" + str + apuesta + "</html>";
     }
@@ -99,9 +98,6 @@ public class Jugador {
     }
 
     public boolean puedeJugar(int apuesta) {
-        if (this.fichas < apuesta)
-            return false;
-        else
-            return true;
+        return this.fichas >= apuesta;
     }
 }

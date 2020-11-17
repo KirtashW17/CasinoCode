@@ -3,7 +3,7 @@ package dam.jferrando_tscalise;
 /*
  * CASINO CODE
  *
- * V. 0.9.1   LAST UPDATE: 15/11/2020
+ * V. 1.1   LAST UPDATE: 16/11/2020
  *
  * Creadores:
  * Joan S. Ferrando
@@ -13,16 +13,10 @@ package dam.jferrando_tscalise;
  *
  * GIT REPOSITORY: https://github.com/Kycoo17/CasinoCode
  *
- * TODO
- *  -Funcionalidad Botones
- *  -CPU' Jugadores
- *  -Actualizar JDialog
- *  -Color de Fuente
- *  -Layout
- *  -Tamaño Label
- *  -Cambiar MessageTypes de JOptionPane
  */
+
 //IMPORTS para el diseño de la interfaz
+
 
 import javax.swing.*;
 import javax.swing.plaf.ColorUIResource;
@@ -36,9 +30,9 @@ public class Main {
         Ruleta ruleta = new Ruleta();
 
         // Constantes menú
-        final int edadLegal = 18;
-        final ImageIcon icon = new ImageIcon("img/icon.png");
-        final ImageIcon working = new ImageIcon("img/working.png");
+        final int EDADLEGAL = 18;
+        final ImageIcon ICON = new ImageIcon("img/icon.png");
+        final ImageIcon WORKING = new ImageIcon("img/working.png");
 
         // Variable INT menú
         int edadInt;
@@ -49,9 +43,8 @@ public class Main {
         String input;
 
         //Gestor de Interfaz y de color
-        UIManager UI = new UIManager();
-        UI.put("OptionPane.background", new ColorUIResource(160, 160, 160));
-        UI.put("Panel.background", new ColorUIResource(160, 160, 160));
+        UIManager.put("OptionPane.background", new ColorUIResource(160, 160, 160));
+        UIManager.put("Panel.background", new ColorUIResource(160, 160, 160));
 
 
         //Solicitamos la edad y la guardamos en la variable input, si la edad es "" la volvemos a pedir, si es null cerramos el programa.
@@ -69,7 +62,7 @@ public class Main {
 
         //Una vez insertada la edad la parseamos a Int y comprobamos que no sea inferior a la edad legal
         edadInt = Integer.parseInt(input);
-        if (edadInt < edadLegal) {
+        if (edadInt < EDADLEGAL) {
             JOptionPane.showMessageDialog(null, "Necesitas ser mayor de edad para jugar.");
             System.exit(0);
         }
@@ -77,7 +70,7 @@ public class Main {
         //Bucle principal del menú de los juegos.
         while (true) {
             input = (String) JOptionPane.showInputDialog(null, "¿A que deseas jugar?", title,
-                    JOptionPane.QUESTION_MESSAGE, icon, MenuInicio, MenuInicio[0]);
+                    JOptionPane.QUESTION_MESSAGE, ICON, MenuInicio, MenuInicio[0]);
             if (input == null)
                 System.exit(0);
             switch (input) {
@@ -86,11 +79,12 @@ public class Main {
                     ruleta.showInterface();
                     break;
                 case "Juego del Bingo":
-                    //Si elegimos el Juego del Bingo, sale un mensaje de que esta desarollo                     JOptionPane.showMessageDialog(null, "Disponible Próximamente", title, JOptionPane.INFORMATION_MESSAGE,working);
+                    //Si elegimos el Juego del Bingo, sale un mensaje de que esta desarollo
+                    JOptionPane.showMessageDialog(null, "Estamos trabajando duro para ofrecerte el Juego del Bingo lo antes posible", "Disponible Próximamente", JOptionPane.INFORMATION_MESSAGE,WORKING);
                     break;
                 case "Juego de Arcade":
                     //Si elegimos el Juego de Arcade, sale un mensaje de que esta desarollo.
-                    JOptionPane.showMessageDialog(null, "Disponible Próximamente", title, JOptionPane.INFORMATION_MESSAGE, working);
+                    JOptionPane.showMessageDialog(null, "Estamos trabajando duro para ofrecerte el Juego de Arcade lo antes posible", "Disponible Próximamente", JOptionPane.INFORMATION_MESSAGE,WORKING);
                     break;
                 case "Salir":
                     System.exit(0);     //0 = NO HAY ERRORES

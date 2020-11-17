@@ -3,11 +3,23 @@
 
 Software created by Thomas Scalise and Joan S. Ferrando.
 
-Last stable version: 0.9
+Last stable version: 1.0
 
 Date of release: 16/11/2020
 
 ### Changelog:
+***v1.0***
+- Last fixes to launch version 1.0. Casino Code is over, we are out of beta.
+- Better code readability.
+- Rebuild structure of classes.
+- Test on other resolutions.
+- Fix bugs.
+- Improve UI and UX.
+- New UI.
+- Add more information to the game.
+- Add better message dialog on development games (image).
+- Clean code and document code.
+- Add wait time to simulate real game (3 seconds).
 
 ***v0.9:***
 - Additional Functionality added (BETA).
@@ -58,13 +70,3 @@ Date of release: 16/11/2020
 - Add options.
 - Debug interfaces errors.
 - Add temporal icon.
-
-
-**************************
-
-### TO-DO:
-- Improve UI and UX.
-- Add better message dialog on development games.
-- Clean code and document code.
-- Change icon.
-- Add wait time to simulate real game

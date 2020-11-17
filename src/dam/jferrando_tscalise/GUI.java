@@ -2,69 +2,65 @@ package dam.jferrando_tscalise;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class GUI {
 
-    int DELAY = 3000;
-    Jugador jugador = new Jugador(false,1000);
+    /*NOTA: Los elementos declarados aqui, fuera de los metodos de la clase, son los que tendrán que ser accesibles desde otras clases*/
+
+
+    //Creamos los jugadores y la banca como instancias de la clase jugador.
+    Jugador jugador = new Jugador();
     Jugador banca = new Jugador(true);
     Jugador cpu1 = new Jugador();
     Jugador cpu2 = new Jugador();
     Jugador cpu3 = new Jugador();
 
-    //LA CONSTANTE APUESTA DEBERÍA ESTAR EN RULETA.JAVA
-    static final int APUESTA = 10;
-    //VARIABLES ESTÁTICAS DE LA GUI, SE PUEDEN ELIMNAR Y ALMACENAR EN INSTANCIAS DE LA CLASE JUGADOR
-    //FIXME INSTANCIAS OBJETO
-    /*
-    static int apuestaUsuario;
-    static int fichasUsuario = 100;
-    static int fichasCPU1 = 100;
-    static int fichasCPU2 = 100;
-    static int fichasCPU3 = 100;
-    static int fichasBanca = 100;
-     */
+    int apuestaAlConfirmar;     //Esta variable es necesaria para corregir el comportamiento al cambiar la apuesta mientras corre el timer.
+    static final int FICHASAPUESTA = 10;    //Esta constante se usa tanto en GUI como en Ruleta. En Ruleta se referencia el valor de GUI.FICHASAPUESTA
 
+    //Creamos el JDialog al cual insertaremos contenido posteriormente (Es el padre de nuestra GUI)
+    JDialog dialog = new JDialog(new JFrame(), "Ruleta Americana", true);
 
-    //Cremos el JDialog al cual insertaremos contenido posteriormente
-    static JDialog dialog = new JDialog(new JFrame(), "Ruleta Americana", true);
+    //Creamos las labels de la clase a las cuales asignaremos texto posteriormente desde la clase Ruleta (por ello están fuera del método principal.) (necesitan ser accesibles desde Ruleta.java)
+    //NOTA: Usaremols una JLabel si tenemos la necesidad de insertar HTML dentro.
+    JLabel info1 = new JLabel();
+    JLabel info2 = new JLabel();
+    JLabel info3 = new JLabel();
+    JLabel info4 = new JLabel();
+    JLabel info5 = new JLabel();
+    JLabel info6 = new JLabel();
+    Label label_informe3 = new Label("No tienes suficientes fichas como para seguir apostando.");  //Informe de errores y conficiones
+    Label label_informe4 = new Label("Solo quedas tú en la mesa. ¡Has desvalijado a todos.!");  //Informe de errores y conficiones
+    //END creación labels de la clase
 
-
-    //Creamos las labels estáticas a las cuales asignaremos texto posteriormente desde la clase Ruleta
-    static JLabel info1 = new JLabel();
-    static JLabel info2 = new JLabel();
-    static JLabel info3 = new JLabel();
-    static JLabel info4 = new JLabel();
-    static JLabel info5 = new JLabel();
-    static JLabel info6 = new JLabel();
-    //END creación labels estáticas
-
-    JPanel pan_informes = new JPanel();
-    Label label_error = new Label("No tienes suficientes fichas como para seguir apostando.");
+    //Creación paneles de la clase (necesitan ser accesibles desde Ruleta.java)
     JPanel pan_informe1 = new JPanel();                                      //PANEL DE INFORMACION DE LOS RESULTADOS
     JPanel pan_informe2 = new JPanel();                                     //PANEL DEL NUMERO GANADOR
 
-
     static int[] rojos = {3, 9, 12, 18, 21, 30, 36, 5, 14, 23, 32, 1, 7, 16, 19, 25, 27, 34};  //VECTOR DE NUMEROS ROJOS
-    int[][] tablero = new int[3][12];                                                       //MATRIZ TABLERO
+
+    public void nuevaApuesta() {
+        jugador.nuevaApuesta();
+        cpu1.nuevaApuesta();
+        cpu2.nuevaApuesta();
+        cpu3.nuevaApuesta();
+        banca.nuevaApuesta();
+    }
+
+    public boolean canSomeCpuPlay() {
+        return cpu1.puedeJugar(FICHASAPUESTA) || cpu2.puedeJugar(FICHASAPUESTA) || cpu3.puedeJugar(FICHASAPUESTA);
+    }
 
     public GUI() { //CONSTRUCTOR, SE EJECUTARÁ AL INSTANCIAR GUI
 
+        int DELAY = 3000;  //El timer tardará 3 segundos (3000ms) en girar la ruleta.
 
-        final ImageIcon iconTitle = new ImageIcon("img/icon.png");
+        JPanel pan_informes = new JPanel();
 
         //VARIABLES GUI RULETA
         int[][] tablero = new int[3][12];                                               //MATRIZ TABLERO
         int casilla, primeraCasilla = 3, rows = 3, cols = 12;                           //VARIABLES NUMERICAS PARA EL NUMERO DE LA CASILLA, FILAS Y COLUMNAS
         boolean flag;                                                                   //BOOLEANO QUE INDICA SI UN NUMERO ES ROJO O NO
-
-        /*Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        dialog.setPreferredSize(new Dimension(800,460));
-        dialog.pack();
-
-        dialog.setResizable(false);*/
 
         //CREACIÓN PANELES
         JPanel pan_contenedor = new JPanel();                               //PANEL CONTENEDOR
@@ -73,8 +69,6 @@ public class GUI {
         JPanel pan_tablero = new JPanel();                                  //PANEL TABLERO
         JPanel pan_list_derecha = new JPanel();                                 //PANEL CON LA INFORMACION DE LA CPU A LA DERECHA
         JPanel pan_separador = new JPanel();                                 //PANEL INFERIOR
-
-
         //END CREACIÓN PANELES
 
         //CREACIÓN ETIQUETAS
@@ -83,30 +77,30 @@ public class GUI {
         label_Title.setForeground(Color.BLACK);
 
         JLabel label_tuApuesta = new JLabel("<html>&nbsp;Apuesta:</html> ");
-        label_tuApuesta.setFont(new Font("Courier", Font.BOLD, 26));
+        label_tuApuesta.setFont(new Font("Courier", Font.BOLD, 24));
         label_tuApuesta.setForeground(Color.BLACK);
 
         JLabel label_fichas = new JLabel(" Fichas: " + jugador.getFichas());
-        label_fichas.setFont(new Font("Courier", Font.BOLD, 26));
+        label_fichas.setFont(new Font("Courier", Font.BOLD, 24));
         label_fichas.setForeground(Color.BLACK);
 
         JLabel label_cpu1 = new JLabel("<html>&nbsp;CPU1: " + cpu1.getFichas() + "</html>");
-        label_cpu1.setFont(new Font("Courier", Font.BOLD, 26));
+        label_cpu1.setFont(new Font("Courier", Font.BOLD, 24));
         label_cpu1.setForeground(Color.BLACK);
 
         JLabel label_cpu2 = new JLabel("<html>&nbsp;CPU2: " + cpu2.getFichas() + "</html>");
-        label_cpu2.setFont(new Font("Courier", Font.BOLD, 26));
+        label_cpu2.setFont(new Font("Courier", Font.BOLD, 24));
         label_cpu2.setForeground(Color.BLACK);
 
         JLabel label_cpu3 = new JLabel("<html>&nbsp;CPU3: " + cpu3.getFichas() + "</html>");
-        label_cpu3.setFont(new Font("Courier", Font.BOLD, 26));
+        label_cpu3.setFont(new Font("Courier", Font.BOLD, 24));
         label_cpu3.setForeground(Color.BLACK);
 
         JLabel label_banca = new JLabel("<html>&nbsp;Banca: " + banca.getFichas() + "</html>");
-        label_banca.setFont(new Font("Courier", Font.BOLD, 26));
+        label_banca.setFont(new Font("Courier", Font.BOLD, 24));
         label_banca.setForeground(Color.BLACK);
 
-        label_error.setVisible(false);
+        label_informe3.setVisible(false);
 
         //END CREACIÓN DE ETIQUETAS
 
@@ -151,7 +145,7 @@ public class GUI {
         pan_list_izquierda.add(label_Title);
         pan_list_izquierda.add(label_tuApuesta);
         pan_list_izquierda.add(label_fichas);
-        pan_list_izquierda.add(new Label("  Se apostarán 10 fichas."));
+        pan_list_izquierda.add(new Label("  Se apostarán " + FICHASAPUESTA + " fichas."));
         pan_list_izquierda.add(botonConfirmar);
 
         //CONFIG pan_list_derecha -> Subpanel hijo de pan_superior
@@ -178,10 +172,20 @@ public class GUI {
                 JButton button = new JButton(Integer.toString(tablero[i][j]));  //Creamos un nuevo botón cuyo contenido será el número contenido en tablero[i][j] pasado a string
                 button.setPreferredSize(new Dimension(100, 100));   //Insertamos el tamaño del botón
                 button.setFont(new Font("Courier", Font.BOLD, 25));    //Configuramos la fuente del botón
+
+                for (int rojo : rojos) {  //for k, recorre el vector de numeros rojos por cada casilla de la matriz tabelro
+                    if (rojo == tablero[i][j]) {
+                        flag = true;                    //Si el valor de la celda es igual a un número del vector rojos, asignamos la bandera a 'true'
+                        break;
+                    }
+                }
+
+                /*NOTA: ENHACED FOR RECOMENDADO POR EL IDE, FOR ORIGINAL:
                 for (int k = 0; k < (rojos.length); k++) {  //for k, recorre el vector de numeros rojos por cada casilla de la matriz tabelro
                     if (rojos[k] == tablero[i][j])
                         flag = true;                    //Si el valor de la celda es igual a un número del vector rojos, asignamos la bandera a 'true'
                 }
+                 */
 
                 //Si el flag es true el color de botón será rojo y la fuente negra, y en caso contrario el botón será negro y la fuente blanca
                 if (!flag) {
@@ -191,16 +195,13 @@ public class GUI {
                     button.setBackground(Color.RED);
 
                 //Añadimos un evento al presionar el botón
-                button.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
+                button.addActionListener(e -> {
 
-                        //Modificamos la variable del numero apostado por el usuario
-                        jugador.setApuesta(Integer.parseInt(button.getText()));
-                        //Modificamos la etiqueta tuApuesta
-                        label_tuApuesta.setText(jugador.getColoredString("Apuesta: "));
-                        dialog.revalidate();
-                    }
+                    //Modificamos la variable del numero apostado por el usuario
+                    jugador.setApuesta(Integer.parseInt(button.getText()));
+                    //Modificamos la etiqueta tuApuesta
+                    label_tuApuesta.setText(jugador.getColoredString("Apuesta: "));
+                    dialog.revalidate();
                 });
                 pan_tablero.add(button);        //Añadimos el botón en el pan_tablero
             }
@@ -216,109 +217,110 @@ public class GUI {
         pan_informes.setLayout(new BoxLayout(pan_informes, 1));
         pan_informe1.setLayout(new GridLayout(1, 4));
         pan_informe2.setLayout(new GridLayout(1, 2));
-        pan_informe2.setMaximumSize(new Dimension(550, 125));
+        pan_informe2.setMaximumSize(new Dimension(600, 125));
         pan_informes.setSize(800, 150);
         pan_informes.setPreferredSize(new Dimension(800, 105));
 
         //ELEMENTOS INFORME
         pan_informes.add(pan_informe1);
         pan_informes.add(pan_informe2);
-        pan_informes.add(label_error);
+        pan_informes.add(label_informe3);
+        pan_informes.add(label_informe4);
+
         pan_informe1.add(info1);
         pan_informe1.add(info2);
         pan_informe1.add(info3);
-
         pan_informe1.add(info4);
         pan_informe2.add(info5);
         pan_informe2.add(info6);
+
         info1.setFont(new Font("courier", Font.BOLD, 22));
         info1.setForeground(Color.BLACK);
-        info5.setFont(new Font("courier", Font.BOLD, 28));
+        info2.setFont(new Font("courier", Font.BOLD, 22));
+        info2.setForeground(Color.BLACK);
+        info3.setFont(new Font("courier", Font.BOLD, 22));
+        info3.setForeground(Color.BLACK);
+        info4.setFont(new Font("courier", Font.BOLD, 22));
+        info4.setForeground(Color.BLACK);
+        info5.setFont(new Font("courier", Font.BOLD, 25));
         info5.setForeground(Color.BLACK);
-        info6.setFont(new Font("courier", Font.BOLD, 28));
+        info6.setFont(new Font("courier", Font.BOLD, 25));
         info6.setForeground(Color.BLACK);
 
+        label_informe3.setFont(new Font("Courier", Font.BOLD, 36));
+        label_informe3.setForeground(Color.RED);
+        label_informe3.setAlignment(Label.CENTER);
+        label_informe4.setFont(new Font("Courier", Font.BOLD, 36));
+        label_informe4.setForeground(Color.BLUE);
+        label_informe4.setAlignment(Label.CENTER);
+        label_informe4.setVisible(false);
+        //END INFORMES
 
-        //COMPORTAMIENTO BOTONES SALIR Y CONFIRMAR
-        Timer timer = new Timer(DELAY, new ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
-                botonConfirmar.setEnabled(true);
+        //COMPORTAMIENTO BOTONES SALIR Y CONFIRMAR:
+
+        //Creamos un nuevo Timer que se ejecutará al confirmar la apuesta mientras gira la ruleta. El timer tendrá un retraso de DELAY (CONSTANTE)
+        Timer timer = new Timer(DELAY, evt -> {
+            //Una vez completado el tiempo de espera del timer:
+            jugador.setApuesta(apuestaAlConfirmar);         //La apuesta del jugador se asigna a la variable apuestaAlConfirmar
+            Ruleta.apostar();                               //Ejecutamos la función apostar() de la clase Rulera
+            botonConfirmar.setEnabled(true);                //Habilitamos de nuevo el botón de confirmar
+
+            //Modificamos la GUI (si una CPU está sin fichas la tachamos y dejará de jugar
+            label_fichas.setText("<html>&nbsp;Fichas: " + jugador.getFichas() + jugador.diferenciaFichasHtml() + "</html>");
+            if (cpu1.puedeJugar(FICHASAPUESTA))
+                label_cpu1.setText("<html>&nbsp;CPU1: " + cpu1.getFichas() + cpu1.diferenciaFichasHtml() + "</html>");
+            else
+                label_cpu1.setText("<html><strike>&nbsp;CPU1: " + cpu1.getFichas() + "</strike></html>");
+            if (cpu2.puedeJugar(FICHASAPUESTA))
+                label_cpu2.setText("<html>&nbsp;CPU2: " + cpu2.getFichas() + cpu2.diferenciaFichasHtml() + "</html>");
+            else
+                label_cpu2.setText("<html><strike>&nbsp;CPU2: " + cpu2.getFichas() + "</strike></html>");
+            if (cpu3.puedeJugar(FICHASAPUESTA))
+                label_cpu3.setText("<html>&nbsp;CPU3: " + cpu3.getFichas() + cpu3.diferenciaFichasHtml() + "</html>");
+            else
+                label_cpu3.setText("<html><strike>&nbsp;CPU3: " + cpu3.getFichas() + "</strike></html>");
+            label_banca.setText("<html>&nbsp;Banca: " + banca.getFichas() + banca.diferenciaFichasHtml() + "</html>");
+
+            label_informe3.setForeground(Color.RED);
+
+            //Ejecutamos la función nuevaApuesta que restablece los valores por defecto a esRojo y jugando de los jugadores
+            nuevaApuesta();
+
+            //Revalidamos la GUI para que esta se actualice
+            dialog.revalidate();
+
+        });
+        timer.setRepeats(false);  //El temporizador se repite hasta pulsar de nuevo el botón de confirmar.
+
+        //Al hacer clic en el botón de confirmar se ejecuta lo siguiente:
+        botonConfirmar.addActionListener(e -> {
+            if (jugador.getApuesta() != 0 && jugador.puedeJugar(FICHASAPUESTA) && canSomeCpuPlay()) {
+                //En condiciones normales (al menos una GUI en juego, una apuesta seleccionada y tenemos suficientes fichas) se ejecutará lo siguiente:
+                apuestaAlConfirmar = jugador.getApuesta();  //Asignamos la variable apuestaAlConfirmar al valor de jugador.apuesta
+                botonConfirmar.setEnabled(false);           //Deshabilitamos el boton de confirmar hasta después de la ejecución del timer
+                pan_informe1.setVisible(false);             //Hacemos informe1 y informe2 invisibles
+                pan_informe2.setVisible(false);
+                label_informe3.setText("La ruleta está girando... ¡Buena suerte!"); //Insertamos un texto que indica que la ruleta está girado
+                label_informe3.setForeground(Color.BLACK);  //El color del texto se asigna a negro
+                label_informe3.setVisible(true);            //Hacemos visible el texto creado anteriormente
+                timer.start();                              //Comenzamos el temporizador
+                dialog.revalidate();                        //Revalidamos la GUI.
+            } else
+                //En el caso de una condición que de error en el if de apostar() omitimos el temporizador para que se muestre enseguida.
                 Ruleta.apostar();
-                label_fichas.setText("<html>&nbsp;Fichas: " + jugador.getFichas() + jugador.diferenciaFichasHtml() + "</html>");
-                if (cpu1.puedeJugar(APUESTA))
-                    label_cpu1.setText("<html>&nbsp;CPU1: " + cpu1.getFichas() + cpu1.diferenciaFichasHtml() + "</html>");
-                else
-                    label_cpu1.setText("<html><strike>&nbsp;CPU1: " + cpu1.getFichas() + "</strike></html>");
-                if (cpu2.puedeJugar(APUESTA))
-                    label_cpu2.setText("<html>&nbsp;CPU2: " + cpu2.getFichas() + cpu2.diferenciaFichasHtml() + "</html>");
-                else
-                    label_cpu2.setText("<html><strike>&nbsp;CPU2: " + cpu2.getFichas() + "</strike></html>");
-                if (cpu3.puedeJugar(APUESTA))
-                    label_cpu3.setText("<html>&nbsp;CPU3: " + cpu3.getFichas() + cpu3.diferenciaFichasHtml() + "</html>");
-                else
-                    label_cpu3.setText("<html><strike>&nbsp;CPU3: " + cpu3.getFichas() + "</strike></html>");
-                label_banca.setText("<html>&nbsp;Banca: " + banca.getFichas() + banca.diferenciaFichasHtml() + "</html>");
 
-                nuevaApuesta();
-                dialog.revalidate();
-            }
+            //ESPERAR (3 Segundos)
+            //Calcular canador y reasignar labels, removiendo el label grande que se ha creado anteriormente
+
         });
-        timer.setRepeats(false);
-        botonConfirmar.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //TODO
-                //ESTA GIRANDO LA RULETA (LABEL)
-                if (jugador.getApuesta() != 0 && jugador.puedeJugar(APUESTA) && canSomeCpuPlay()) {
-                    botonConfirmar.setEnabled(false);
-                    pan_informe1.setVisible(false);
-                    pan_informe2.setVisible(false);
-                    label_error.setText("La ruleta está girando... ¡Buena suerte!");
-                    label_error.setFont(new Font("Courier", Font.BOLD, 36));
-                    label_error.setForeground(Color.BLACK);
-                    label_error.setAlignment(Label.CENTER);
-                    label_error.setVisible(true);
-                    timer.start();
-                    dialog.revalidate();
-                } else
-                    Ruleta.apostar();
 
-                //ESPERAR (3 Segundos)
-                //Calcular canador y reasignar labels, removiendo el label grande que se ha creado anteriormente
-
-            }
-        });
-        botonSalir.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                //dialog.setVisible(false);
-                dialog.setVisible(false);
-            }
-        });
-        //JDialog
-        dialog.getContentPane().add(pan_contenedor);
-        dialog.pack();
-
-    }
+        //Funcionalidad del Botón de Salir -> Ocultará el JDialog.
+        botonSalir.addActionListener(e -> dialog.setVisible(false));
 
 
-    public void setVisible() {
-        dialog.setVisible(true);
-    }
+        dialog.getContentPane().add(pan_contenedor);  //Añadimos pan_contenedor al JDialolg (contiene todos los subpaneles
+        dialog.pack();                                //Redimensiona los elementos al tamaño favorito (setPreferredSize)
 
-    public void nuevaApuesta() {
-        jugador.nuevaApuesta();
-        cpu1.nuevaApuesta();
-        cpu2.nuevaApuesta();
-        cpu3.nuevaApuesta();
-        banca.nuevaApuesta();
-    }
-
-    public boolean canSomeCpuPlay() {
-        if (cpu1.puedeJugar(APUESTA)||cpu2.puedeJugar(APUESTA)||cpu3.puedeJugar(APUESTA))
-            return true;
-        else
-            return false;
     }
 
 }
